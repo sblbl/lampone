@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Fruktur:ital@0;1&family=Work+Sans:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.work {
+	@apply font-work tracking-tight;
+}
+
+.fruktur {
+	@apply font-fruktur;
+}
+
+body {
+	@apply work bg-light-cream;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@apply fruktur text-blue-raspberry text-4xl;
+}
+
+section {
+	@apply h-full flex flex-col items-center justify-center;
+}
+
+a {
+	@apply text-light-cream visited:text-neutral-light hover:text-neutral-light no-underline;
+}
+
+button {
+	@apply rounded-full px-8 py-1 bg-dark-cream hover:bg-dark-cream/[.95] text-neutral-light font-semibold cursor-pointer;
+}
+
+.red-button {
+	@apply rounded-full px-6 py-1 bg-raspberry hover:bg-raspberry/[.95] text-neutral-light cursor-pointer;
+}
+
+.blue-button {
+	@apply rounded-full px-6 py-1 bg-blue-raspberry hover:bg-blue-raspberry/[.95] text-neutral-light cursor-pointer;
+}
+
+input {
+	@apply px-4 py-3 rounded-full bg-neutral-light text-neutral-dark outline-0 outline-none border-0;
+}
