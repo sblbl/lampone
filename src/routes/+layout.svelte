@@ -20,11 +20,7 @@
 
 <svelte:body bind:offsetHeight />
 
-<main
-	class="w-screen {`h-[${offsetHeight}px]`} flex justify-center {currentPath == '/'
-		? 'bg-blue-raspberry'
-		: ''}"
->
+<main class="w-screen h-dvh flex justify-center {currentPath == '/' ? 'bg-blue-raspberry' : ''}">
 	<div class="w-full h-full max-w-xl p-4 flex flex-col items-center justify-end">
 		<div class="w-full flex-grow">
 			<slot />
