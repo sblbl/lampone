@@ -20,7 +20,7 @@
 	})
 </script>
 
-<header class="mt-4 w-full h-8 font-base flex items-center justify-center gap-2 z-50">
+<header class="mt-4 w-full h-8 font-base flex items-center justify-center gap-2 z-40">
 	<nav>
 		<ul class="w-full list-none flex items-center justify-center gap-4">
 			{#each Object.keys(paths) as path}
