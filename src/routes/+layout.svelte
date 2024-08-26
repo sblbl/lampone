@@ -28,3 +28,11 @@
 		<Header />
 	</div>
 </main>
+
+<style>
+	main {
+		@media all and (display-mode: standalone) {
+			height: 100lvh;
+		}
+	}
+</style>
