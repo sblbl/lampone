@@ -52,10 +52,6 @@
 	})
 </script>
 
-<svelte:head>
-	<title>print</title>
-</svelte:head>
-
 <section>
 	<form
 		on:submit|preventDefault={postImage}
