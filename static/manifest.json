@@ -2,7 +2,7 @@
 	"short_name": "Lampone",
 	"name": "Lampone",
 	"description": "A tunnel between wherever you are and your loved raspberry pi.",
-	"display": "standalone",
+	"display": "fullscreen",
 	"start_url": "/",
 	"scope": "/",
 	"icons": [
