@@ -35,7 +35,7 @@ h6 {
 }
 
 section {
-	@apply h-full flex flex-col items-center justify-center;
+	@apply h-svh flex flex-col items-center justify-center;
 }
 
 a {
