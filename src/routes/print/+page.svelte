@@ -26,17 +26,15 @@
 		printBtn.disabled = true
 		await realtimeSet('print', file)
 		await tick()
-		if (dbData.print == file) {
-			status = 'printing'
-			file = null
-			await new Promise((r) => setTimeout(r, 1000))
-			status = 'printed'
-			log = 'sent to printer'
-			await new Promise((r) => setTimeout(r, 3000))
-			log = null
-			await new Promise((r) => setTimeout(r, 500))
-			status = 'printable'
-		}
+		status = 'printing'
+		file = null
+		await new Promise((r) => setTimeout(r, 1000))
+		status = 'printed'
+		log = 'sent to printer'
+		await new Promise((r) => setTimeout(r, 3000))
+		log = null
+		await new Promise((r) => setTimeout(r, 500))
+		status = 'printable'
 	}
 
 	const reset = async () => {

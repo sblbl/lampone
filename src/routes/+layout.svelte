@@ -15,7 +15,7 @@
 	})
 </script>
 
-<main class="w-screen h-dvh flex justify-center">
+<main class="w-screen h-svh flex justify-center">
 	<div class="w-full h-full max-w-xl p-4 flex flex-col items-center justify-end">
 		{#if title != null}
 			<h1 class="text-4xl trailing-wide select-none">{title}</h1>
