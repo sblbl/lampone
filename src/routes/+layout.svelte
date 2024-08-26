@@ -15,11 +15,15 @@
 	})
 </script>
 
-<main class="w-screen h-screen max-h-dvh flex justify-center">
+<main
+	class="w-screen h-screen max-h-dvh flex justify-center {title == 'home'
+		? 'bg-blue-raspberry'
+		: ''}"
+>
 	<div class="w-full h-full max-w-xl p-4 flex flex-col items-center justify-end">
-		{#if title != null}
+		<!-- {#if title != null}
 			<h1 class="text-4xl trailing-wide select-none">{title}</h1>
-		{/if}
+		{/if} -->
 		<div class="w-full flex-grow">
 			<slot />
 		</div>
