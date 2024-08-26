@@ -1,14 +1,15 @@
 <script>
-	import { tempFile } from '$lib/'
 	import { listenToDatabase, realtimeSet, realtimeData } from '$lib'
 	import { fade } from 'svelte/transition'
 	import { onMount, tick } from 'svelte'
+
+	let printBtn
 
 	let file,
 		imgWidth,
 		dbData = {},
 		log,
-		status = 'printable' // todo set this to 'printable'
+		status = 'printable'
 
 	const getFile = async (e) => {
 		const reader = new FileReader()
@@ -22,13 +23,15 @@
 	}
 
 	const postImage = async () => {
+		printBtn.disabled = true
 		await realtimeSet('print', file)
 		await tick()
 		if (dbData.print == file) {
+			status = 'printing'
 			file = null
 			await new Promise((r) => setTimeout(r, 1000))
 			status = 'printed'
-			log = 'printed'
+			log = 'sent to printer'
 			await new Promise((r) => setTimeout(r, 3000))
 			log = null
 			await new Promise((r) => setTimeout(r, 500))
@@ -78,7 +81,11 @@
 						/>
 					</div>
 					<div class="w-full flex justify-center">
-						<button type="submit" class="red-button">print</button>
+						<button
+							bind:this={printBtn}
+							type="submit"
+							class="red-button disabled:opacity-35">print</button
+						>
 					</div>
 				</div>
 			</div>

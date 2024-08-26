@@ -28,7 +28,7 @@
 					<li>
 						<a
 							href={path}
-							class="font-semibold text-lg rounded-full px-8 py-1 {currentPath == '/'
+							class="font-semibold text-lg rounded-full px-10 py-2 {currentPath == '/'
 								? 'bg-raspberry hover:bg-raspberry/[.95]'
 								: 'bg-blue-raspberry hover:bg-blue-raspberry/[.95]'}"
 							>{paths[path]}</a
