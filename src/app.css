@@ -22,7 +22,7 @@
 }
 
 body {
-	@apply work bg-light-cream;
+	@apply work bg-transparent;
 }
 
 h1,
