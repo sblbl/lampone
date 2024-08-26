@@ -23,6 +23,7 @@
 
 body {
 	@apply work bg-transparent;
+	height: 100vh;
 }
 
 h1,

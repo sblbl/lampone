@@ -31,6 +31,7 @@
 
 <style>
 	main {
+		height: 100vh;
 		@media all and (display-mode: standalone) {
 			height: 100lvh;
 		}
