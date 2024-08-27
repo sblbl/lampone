@@ -4,7 +4,8 @@
 
 	let paths = {
 		'/': 'home',
-		'/print': 'print'
+		'/print': 'print',
+		'/text': 'text'
 	}
 
 	let currentPath = ''

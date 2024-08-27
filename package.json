@@ -26,6 +26,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"firebase": "^10.12.5"
+		"firebase": "^10.12.5",
+		"marked": "^14.1.0"
 	}
 }
