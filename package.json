@@ -27,6 +27,7 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^10.12.5",
-		"marked": "^14.1.0"
+		"marked": "^14.1.0",
+		"node-ssh": "^13.2.0"
 	}
 }

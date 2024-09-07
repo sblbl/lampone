@@ -5,7 +5,7 @@
 	import Paragraph from '$lib/components/text/Paragraph.svelte'
 	import ReceiptEnd from '$lib/components/text/ReceiptEnd.svelte'
 
-	let printBtn, addLineBtn, receitpWidth
+	let sendBtn, addLineBtn, receitpWidth
 
 	const lineModel = {
 		text: '',
@@ -21,7 +21,21 @@
 		flip: false
 	}
 
-	let texts = [sampleText],
+	let texts = [
+			sampleText,
+			{
+				text: 'destra',
+				align: 'center',
+				invert: false,
+				flip: false
+			},
+			{
+				text: 'culo',
+				align: 'right',
+				invert: false,
+				flip: false
+			}
+		],
 		focuses = [false],
 		tempText = '',
 		aligns = ['left', 'center', 'right'],
@@ -31,10 +45,7 @@
 		log,
 		status = 'writable'
 
-	$: console.log(currentAlign)
 	$: console.log(texts)
-	$: currentText.align = currentAlign
-	$: lineModel.align = currentAlign
 	$: {
 		if (tempText.length > 0 && addLineBtn) {
 			addLineBtn.disabled = false
@@ -42,6 +53,7 @@
 			addLineBtn.disabled = true
 		}
 	}
+
 	const addLine = () => {
 		currentText.text = tempText
 		texts = [...texts, currentText]
@@ -77,18 +89,18 @@
 	}
 
 	const postText = async () => {
-		/*sendBtn.disabled = true
-		 await realtimeSet('text', file)
+		sendBtn.disabled = true
+		await realtimeSet('text', texts)
 		await tick()
 		status = 'writing'
-		file = null
+		texts = []
 		await new Promise((r) => setTimeout(r, 1000))
-		status = 'writed'
+		status = 'written'
 		log = 'sent to printer'
 		await new Promise((r) => setTimeout(r, 3000))
 		log = null
 		await new Promise((r) => setTimeout(r, 500))
-		status = 'writable' */
+		reset()
 	}
 
 	const reset = async () => {
@@ -160,7 +172,7 @@
 		</div>
 		<ReceiptEnd n={16} w={receitpWidth} h={24} />
 		<div class="w-full h-16 flex items-center justify-center">
-			<button type="submit" class="red-button">send</button>
+			<button bind:this={sendBtn} type="submit" class="red-button">send</button>
 		</div>
 		<!-- {/if} -->
 	</form>
