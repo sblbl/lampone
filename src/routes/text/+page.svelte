@@ -39,9 +39,11 @@
 			addLineBtn.disabled = true
 		}
 	}
+	$: console.log({ currentAlign })
 
 	const addLine = () => {
 		currentText.text = tempText
+		currentText.align = currentAlign
 		texts = [...texts, currentText]
 		focuses = [...focuses, false]
 		tempText = ''
@@ -63,10 +65,12 @@
 
 	const handleParagraphsChange = (e) => {
 		const key = e.detail.key
-		let newText = e.detail
-		// remove key from new object
-		delete newText.key
-		texts[key] = newText
+		texts[key] = {
+			text: e.detail.text,
+			align: e.detail.align,
+			invert: e.detail.invert,
+			flip: e.detail.flip
+		}
 	}
 
 	const handleParagraphsDelete = (e) => {
@@ -75,6 +79,7 @@
 	}
 
 	const postText = async () => {
+		console.log('posting text')
 		sendBtn.disabled = true
 		await realtimeSet('text', texts)
 		await tick()
@@ -108,7 +113,7 @@
 <section>
 	<form
 		on:submit|preventDefault={postText}
-		class="w-4/5 flex-grow flex flex-col items-center justify-end"
+		class="w-full max-w-sm flex-grow flex flex-col items-center justify-end"
 	>
 		<div
 			bind:clientWidth={receitpWidth}
@@ -122,6 +127,7 @@
 					focused={focuses[i]}
 					on:focus={handleParagraphsFocus}
 					on:delete={handleParagraphsDelete}
+					on:change={handleParagraphsChange}
 				/>
 			{/each}
 		</div>
@@ -129,7 +135,7 @@
 			<div class="h-16">
 				<textarea
 					bind:value={tempText}
-					class="w-full h-full text-zinc-500 overflow-y-scroll px-3 py-1 resize-none outline-none"
+					class="w-full h-full text-zinc-500 overflow-y-scroll pl-3 pr-10 py-1 resize-none outline-none"
 					style="text-align: {currentAlign};"
 					rows="10"
 					placeholder="type to add text"
@@ -139,8 +145,9 @@
 				<div class=" w-7/12 flex items-center justify-start px-2 gap-2">
 					{#each aligns as align}
 						<button
+							type="button"
 							on:click={() => (currentAlign = align)}
-							class="w-1/4 text-center px-0 py-1 text-sm {align != currentAlign
+							class="w-1/3 text-center px-0 py-1 text-sm {align != currentAlign
 								? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
 								: ''}">{align}</button
 						>
@@ -148,6 +155,7 @@
 				</div>
 				<div class="px-2">
 					<button
+						type="button"
 						bind:this={addLineBtn}
 						on:click={addLine}
 						class="px-4 py-1 text-sm bg-blue-raspberry hover:bg-blue-raspberry/[.95] disabled:bg-blue-raspberry/[.50]"
@@ -156,7 +164,7 @@
 				</div>
 			</div>
 		</div>
-		<ReceiptEnd n={16} w={receitpWidth} h={24} />
+		<ReceiptEnd n={16} w={receitpWidth} h={16} />
 		<div class="w-full h-16 flex items-center justify-center">
 			<button bind:this={sendBtn} type="submit" class="red-button">send</button>
 		</div>
