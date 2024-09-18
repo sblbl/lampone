@@ -1,5 +1,5 @@
 <script>
-	import { listenToDatabase, realtimeSet, realtimeData } from '$lib'
+	import { listenToDatabase, realtimeSet, realtimePush, realtimeData } from '$lib'
 	import { fade } from 'svelte/transition'
 	import { onMount, tick } from 'svelte'
 
@@ -24,7 +24,8 @@
 
 	const postImage = async () => {
 		printBtn.disabled = true
-		await realtimeSet('print', file)
+		//await realtimeSet('print', file)
+		await realtimePush('print', file)
 		await tick()
 		status = 'printing'
 		file = null

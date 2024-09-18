@@ -21,21 +21,7 @@
 		flip: false
 	}
 
-	let texts = [
-			sampleText,
-			{
-				text: 'destra',
-				align: 'center',
-				invert: false,
-				flip: false
-			},
-			{
-				text: 'culo',
-				align: 'right',
-				invert: false,
-				flip: false
-			}
-		],
+	let texts = [sampleText],
 		focuses = [false],
 		tempText = '',
 		aligns = ['left', 'center', 'right'],

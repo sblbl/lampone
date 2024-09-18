@@ -60,7 +60,7 @@
 		{#if focused}
 			<textarea
 				on:keydown|stopPropagation
-				on:click|stopPropagation
+				on:click|preventDefault
 				bind:value={text}
 				class="w-full h-full overflow-y-scroll text-zinc-500 px-3 py-1 rounded-xl resize-none outline-none"
 				style="text-align:{align};"
