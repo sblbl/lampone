@@ -2,6 +2,7 @@
 	import { marked } from 'marked'
 	import { slide } from 'svelte/transition'
 	import { createEventDispatcher } from 'svelte'
+	import { tick } from 'svelte'
 	export let text = 'he**llo**'
 	export let align = 'left'
 	export let invert = false
@@ -10,6 +11,7 @@
 	export let key = 0
 
 	const dispatcher = createEventDispatcher()
+	let textarea
 
 	$: console.log({ key, text, align })
 
@@ -20,6 +22,10 @@
 	$: {
 		parsed = marked(text, { renderer })
 		parsed = parsed.replaceAll('<p>', `<p style="text-align:${align};">`)
+	}
+
+	$: if (textarea && focused) {
+		autoResize()
 	}
 
 	renderer.Paragraph = (text) => {
@@ -46,23 +52,30 @@
 	const deleteParagraph = () => {
 		dispatchDelete()
 	}
+
+	const autoResize = async () => {
+		textarea.style.height = 'auto'
+		textarea.style.height = textarea.scrollHeight + 'px'
+	}
 </script>
 
 <div
 	transition:slide
 	on:click|stopPropagation={focus}
-	class="w-full h-fit relative {focused ? 'border-y-2 border-y-white border-dashed ' : ''}"
+	class="w-full h-fit relative border-b-4 border-b-white border-dotted text-sm"
 >
+	<!-- <div transition:slide class="w-full h-fit relative border-b-4 border-b-white border-dotted"> -->
 	<div
-		class="line-{align} w-full h-fit text-{align} bg-white pl-3 pr-10 py-1"
+		class="line-{align} w-full h-fit text-{align} bg-white pl-3 pr-10 py-2 outline-none"
 		style="text-align={align}!important;"
 	>
 		{#if focused}
 			<textarea
+				bind:this={textarea}
 				on:keydown|stopPropagation
 				on:click|stopPropagation
 				bind:value={text}
-				class="w-full h-full overflow-y-scroll text-zinc-500 py-1 rounded-xl resize-none outline-none"
+				class="w-full h-auto overflow-y-scroll text-zinc-500 py-1 rounded-xl resize-none outline-none"
 				style="text-align:{align};"
 			></textarea>
 		{:else}

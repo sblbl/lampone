@@ -5,13 +5,14 @@
 	import Paragraph from '$lib/components/text/Paragraph.svelte'
 	import ReceiptEnd from '$lib/components/text/ReceiptEnd.svelte'
 
-	let sendBtn, addLineBtn, receitpWidth
+	let sendBtn, addLineBtn, receitpWidth, paragraphsContainer
 
 	const lineModel = {
 		text: '',
 		align: 'left',
 		invert: false,
-		flip: false
+		flip: false,
+		image: false
 	}
 
 	const sampleText = {
@@ -21,7 +22,7 @@
 		flip: false
 	}
 
-	let texts = [sampleText],
+	let texts = [],
 		focuses = [false],
 		tempText = '',
 		aligns = ['left', 'center', 'right'],
@@ -39,15 +40,28 @@
 			addLineBtn.disabled = true
 		}
 	}
+	$: {
+		if (sendBtn && texts.length > 0) {
+			sendBtn.disabled = false
+		} else if (sendBtn) {
+			sendBtn.disabled = true
+		}
+	}
 	$: console.log({ currentAlign })
 
-	const addLine = () => {
+	const addLine = async () => {
 		currentText.text = tempText
 		currentText.align = currentAlign
 		texts = [...texts, currentText]
 		focuses = [...focuses, false]
 		tempText = ''
 		currentText = structuredClone(lineModel)
+		// scroll smoothly to the bottom od paragraphsContainer
+		await new Promise((r) => setTimeout(r, 500))
+		paragraphsContainer.scrollTo({
+			top: paragraphsContainer.scrollHeight,
+			behavior: 'smooth'
+		})
 	}
 
 	const resetParagraphsFocus = () => {
@@ -113,61 +127,71 @@
 <section>
 	<form
 		on:submit|preventDefault={postText}
-		class="w-full max-w-sm flex-grow flex flex-col items-center justify-end"
+		class="w-full max-w-sm h-full flex flex-col items-center justify-end relative"
 	>
 		<div
+			bind:this={paragraphsContainer}
 			bind:clientWidth={receitpWidth}
-			class="flex-grow w-full flex flex-col items-start justify-end"
+			class="w-full h-3/4 max-h-full overflow-y-scroll"
 		>
-			{#each texts as text, i}
-				<Paragraph
-					text={text.text}
-					key={i}
-					align={text.align}
-					focused={focuses[i]}
-					on:focus={handleParagraphsFocus}
-					on:delete={handleParagraphsDelete}
-					on:change={handleParagraphsChange}
-				/>
-			{/each}
-		</div>
-		<div class="w-full relative border-t-white border-t-4 border-dashed">
-			<div class="h-16">
-				<textarea
-					bind:value={tempText}
-					class="w-full h-full text-zinc-500 overflow-y-scroll pl-3 pr-10 py-1 resize-none outline-none"
-					style="text-align: {currentAlign};"
-					rows="10"
-					placeholder="type to add text"
-				></textarea>
-			</div>
-			<div class="w-full bg-white py-2 flex items-center justify-between">
-				<div class=" w-7/12 flex items-center justify-start px-2 gap-2">
-					{#each aligns as align}
-						<button
-							type="button"
-							on:click={() => (currentAlign = align)}
-							class="w-1/3 text-center px-0 py-1 text-sm {align != currentAlign
-								? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
-								: ''}">{align}</button
-						>
+			<div class="flex flex-col min-h-full">
+				<div class="mt-auto">
+					{#each texts as text, i}
+						<Paragraph
+							text={text.text}
+							key={i}
+							align={text.align}
+							focused={focuses[i]}
+							on:focus={handleParagraphsFocus}
+							on:delete={handleParagraphsDelete}
+							on:change={handleParagraphsChange}
+						/>
 					{/each}
 				</div>
-				<div class="px-2">
-					<button
-						type="button"
-						bind:this={addLineBtn}
-						on:click={addLine}
-						class="px-4 py-1 text-sm bg-blue-raspberry hover:bg-blue-raspberry/[.95] disabled:bg-blue-raspberry/[.50]"
-						>add</button
-					>
+			</div>
+			<button bind:this={sendBtn} type="submit" class="red-button absolute top-0 right-0"
+				>send</button
+			>
+		</div>
+		<div class="w-full h-1/4">
+			<div class="w-full relative">
+				<div class=" h-24">
+					<textarea
+						bind:value={tempText}
+						class="w-full h-full text-sm text-zinc-500 overflow-y-scroll pl-3 pr-10 py-1 resize-none outline-none"
+						style="text-align: {currentAlign};"
+						rows="10"
+						placeholder="type to add text"
+					></textarea>
+				</div>
+				<div class="w-full bg-white py-2 flex items-center justify-between">
+					<div class=" w-7/12 flex items-center justify-start px-2 gap-2">
+						{#each aligns as align}
+							<button
+								type="button"
+								on:click={() => (currentAlign = align)}
+								class="w-1/3 text-center px-0 py-1 text-sm {align != currentAlign
+									? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
+									: ''}">{align}</button
+							>
+						{/each}
+					</div>
+					<div class="px-2">
+						<button
+							type="button"
+							bind:this={addLineBtn}
+							on:click={addLine}
+							class="px-4 py-1 text-sm bg-blue-raspberry hover:bg-blue-raspberry/[.95] disabled:bg-blue-raspberry/[.50]"
+							>add</button
+						>
+					</div>
 				</div>
 			</div>
+			<ReceiptEnd n={16} w={receitpWidth} h={16} />
+			<!-- <div class="w-full h-12 flex items-center justify-center">
+				<button bind:this={sendBtn} type="submit" class="red-button">send</button>
+			</div> -->
+			<!-- {/if} -->
 		</div>
-		<ReceiptEnd n={16} w={receitpWidth} h={16} />
-		<div class="w-full h-16 flex items-center justify-center">
-			<button bind:this={sendBtn} type="submit" class="red-button">send</button>
-		</div>
-		<!-- {/if} -->
 	</form>
 </section>

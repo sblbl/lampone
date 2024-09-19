@@ -5,7 +5,10 @@
 	import '../app.css'
 
 	let currentPath
-	let offsetHeight = 0
+	let offsetHeight = 0,
+		mainHeight = 0
+
+	$: console.log({ mainHeight })
 
 	$: if ($navigating) updatePath()
 
@@ -21,12 +24,14 @@
 <svelte:body bind:offsetHeight />
 
 <main
+	id="main"
+	bind:clientHeight={mainHeight}
 	class="w-screen h-dvh flex justify-center {currentPath == '/'
 		? 'bg-blue-raspberry'
 		: 'bg-light-cream'}"
 >
-	<div class="w-full h-full max-w-xl p-4 flex flex-col items-center justify-end">
-		<div class="w-full flex-grow">
+	<div class="w-full max-w-xl" style="height: {mainHeight}px;">
+		<div class="w-full" style="height: {mainHeight - 60}px;">
 			<slot />
 		</div>
 		<Header />
@@ -35,6 +40,12 @@
 
 <style>
 	main {
+		height: 100vh;
+		@media all and (display-mode: standalone) {
+			height: 100lvh;
+		}
+	}
+	#main {
 		height: 100vh;
 		@media all and (display-mode: standalone) {
 			height: 100lvh;

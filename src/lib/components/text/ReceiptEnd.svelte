@@ -8,7 +8,7 @@
 	$: array = Array.from({ length: n }, (_, i) => i)
 </script>
 
-<svg class="mb-2" width={w} height={h} viewBox="0 0 {w} {h}">
+<svg class="" width={w} height={h} viewBox="0 0 {w} {h}">
 	{#each array as i}
 		<polygon
 			points="{divisionW * i},0 {divisionW * i + divisionW},0 {divisionW * i +

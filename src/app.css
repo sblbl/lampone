@@ -36,7 +36,7 @@ h6 {
 }
 
 section {
-	@apply h-full flex flex-col items-center justify-center;
+	@apply h-full flex flex-col items-center justify-center p-4;
 }
 
 a {
@@ -48,11 +48,11 @@ button {
 }
 
 .red-button {
-	@apply rounded-full px-10 py-2 bg-raspberry hover:bg-raspberry/[.95] text-neutral-light cursor-pointer;
+	@apply rounded-full px-8 py-1 bg-raspberry hover:bg-raspberry/[.95] disabled:bg-raspberry/[.55] text-neutral-light cursor-pointer;
 }
 
 .blue-button {
-	@apply rounded-full px-10 py-2 bg-blue-raspberry hover:bg-blue-raspberry/[.95] text-neutral-light cursor-pointer;
+	@apply rounded-full px-8 py-1 bg-blue-raspberry hover:bg-blue-raspberry/[.95] text-neutral-light cursor-pointer;
 }
 
 input {
