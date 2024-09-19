@@ -8,8 +8,6 @@
 	let offsetHeight = 0,
 		mainHeight = 0
 
-	$: console.log({ mainHeight })
-
 	$: if ($navigating) updatePath()
 
 	onMount(() => {

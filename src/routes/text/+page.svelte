@@ -5,6 +5,9 @@
 	import Paragraph from '$lib/components/text/Paragraph.svelte'
 	import ReceiptEnd from '$lib/components/text/ReceiptEnd.svelte'
 
+	let mode = 'image',
+		file
+
 	let sendBtn, addLineBtn, receitpWidth, paragraphsContainer
 
 	const lineModel = {
@@ -34,7 +37,7 @@
 
 	$: console.log(texts)
 	$: {
-		if (tempText.length > 0 && addLineBtn) {
+		if ((tempText.length > 0 || file) && addLineBtn) {
 			addLineBtn.disabled = false
 		} else if (addLineBtn) {
 			addLineBtn.disabled = true
@@ -49,9 +52,18 @@
 	}
 	$: console.log({ currentAlign })
 
+	const toggleMode = () => {
+		mode = mode === 'text' ? 'image' : 'text'
+	}
+
 	const addLine = async () => {
+		if (mode == 'image') {
+			tempText = file
+			console.log('adding image')
+		}
 		currentText.text = tempText
 		currentText.align = currentAlign
+		currentText.image = mode === 'image' ? true : false
 		texts = [...texts, currentText]
 		focuses = [...focuses, false]
 		tempText = ''
@@ -90,6 +102,15 @@
 	const handleParagraphsDelete = (e) => {
 		texts = texts.filter((t, i) => i !== e.detail.key)
 		focuses = focuses.filter((f, i) => i !== e.detail.key)
+	}
+
+	const getFile = async (e) => {
+		const reader = new FileReader()
+		reader.onload = (e) => {
+			file = e.target.result
+		}
+		reader.readAsDataURL(e.target.files[0])
+		await new Promise((r) => setTimeout(r, 500))
 	}
 
 	const postText = async () => {
@@ -142,6 +163,7 @@
 							key={i}
 							align={text.align}
 							focused={focuses[i]}
+							image={text.image}
 							on:focus={handleParagraphsFocus}
 							on:delete={handleParagraphsDelete}
 							on:change={handleParagraphsChange}
@@ -155,22 +177,44 @@
 		</div>
 		<div class="w-full h-1/4">
 			<div class="w-full relative">
-				<div class=" h-24">
-					<textarea
-						bind:value={tempText}
-						class="w-full h-full text-sm text-zinc-500 overflow-y-scroll pl-3 pr-10 py-1 resize-none outline-none"
-						style="text-align: {currentAlign};"
-						rows="10"
-						placeholder="type to add text"
-					></textarea>
+				<div class="h-16">
+					{#if mode == 'text'}
+						<textarea
+							bind:value={tempText}
+							class="w-full h-full text-sm text-zinc-500 overflow-y-scroll pl-3 pr-10 py-1 resize-none outline-none"
+							style="text-align: {currentAlign};"
+							rows="10"
+							placeholder="type to add text"
+						></textarea>
+					{:else}
+						<input
+							on:change={getFile}
+							type="file"
+							accept="image/*"
+							class="w-full h-full rounded-none text-xs"
+						/>
+					{/if}
 				</div>
 				<div class="w-full bg-white py-2 flex items-center justify-between">
+					<div class="ml-2">
+						<button
+							type="button"
+							on:click={toggleMode}
+							class="bg-white hover:bg-white p-0 flex items-center justify-center"
+						>
+							{#if mode == 'text'}
+								<img src="/ui/text.svg" alt="text icon" class="h-6" />
+							{:else}
+								<img src="/ui/image.svg" alt="image icon" class="h-6" />
+							{/if}
+						</button>
+					</div>
 					<div class=" w-7/12 flex items-center justify-start px-2 gap-2">
 						{#each aligns as align}
 							<button
 								type="button"
 								on:click={() => (currentAlign = align)}
-								class="w-1/3 text-center px-0 py-1 text-sm {align != currentAlign
+								class="w-1/3 text-center px-0 py-1 text-xs {align != currentAlign
 									? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
 									: ''}">{align}</button
 							>
@@ -188,10 +232,6 @@
 				</div>
 			</div>
 			<ReceiptEnd n={16} w={receitpWidth} h={16} />
-			<!-- <div class="w-full h-12 flex items-center justify-center">
-				<button bind:this={sendBtn} type="submit" class="red-button">send</button>
-			</div> -->
-			<!-- {/if} -->
 		</div>
 	</form>
 </section>
