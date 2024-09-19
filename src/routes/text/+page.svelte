@@ -8,7 +8,7 @@
 	let mode = 'image',
 		file
 
-	let sendBtn, addLineBtn, receitpWidth, paragraphsContainer
+	let sendBtn, addLineBtn, receitpWidth, paragraphsContainer, fileInput
 
 	const lineModel = {
 		text: '',
@@ -60,6 +60,8 @@
 		if (mode == 'image') {
 			tempText = file
 			console.log('adding image')
+			file = null
+			fileInput.value = ''
 		}
 		currentText.text = tempText
 		currentText.align = currentAlign
@@ -95,7 +97,8 @@
 			text: e.detail.text,
 			align: e.detail.align,
 			invert: e.detail.invert,
-			flip: e.detail.flip
+			flip: e.detail.flip,
+			image: texts[key].image
 		}
 	}
 
@@ -126,6 +129,7 @@
 		await new Promise((r) => setTimeout(r, 3000))
 		log = null
 		await new Promise((r) => setTimeout(r, 500))
+		sendBtn.disabled = false
 		reset()
 	}
 
@@ -145,10 +149,10 @@
 
 <svelte:body on:click|stopPropagation={resetParagraphsFocus} />
 
-<section>
+<section class="relative">
 	<form
 		on:submit|preventDefault={postText}
-		class="w-full max-w-sm h-full flex flex-col items-center justify-end relative"
+		class="w-full max-w-sm h-full flex flex-col items-center justify-end"
 	>
 		<div
 			bind:this={paragraphsContainer}
@@ -171,10 +175,10 @@
 					{/each}
 				</div>
 			</div>
-			<button bind:this={sendBtn} type="submit" class="red-button absolute top-0 right-0"
-				>send</button
-			>
 		</div>
+		<button bind:this={sendBtn} type="submit" class="red-button absolute top-2 right-2"
+			>send</button
+		>
 		<div class="w-full h-1/4">
 			<div class="w-full relative">
 				<div class="h-16">
@@ -188,6 +192,7 @@
 						></textarea>
 					{:else}
 						<input
+							bind:this={fileInput}
 							on:change={getFile}
 							type="file"
 							accept="image/*"

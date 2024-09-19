@@ -66,11 +66,19 @@
 	class="w-full h-fit relative border-b-4 border-b-white border-dotted text-sm"
 >
 	<div
-		class="line-{align} w-full h-fit text-{align} bg-white pl-3 pr-10 py-2 outline-none"
+		class="line-{align} w-full h-fit text-{align} bg-white px-10 py-2 outline-none"
 		style="text-align={align}!important;"
 	>
 		{#if image}
-			<img src={text} alt="image" class="w-full h-auto" />
+			<div
+				class="w-full flex items-center {align == 'left'
+					? 'justify-start'
+					: align == 'center'
+						? 'justify-center'
+						: 'justify-end'}"
+			>
+				<img src={text} alt="image" class="w-1/2 h-auto" />
+			</div>
 		{:else if focused}
 			<textarea
 				bind:this={textarea}
@@ -92,44 +100,43 @@
 			<img src="/ui/collapse.svg" alt="collapse" class="w-full" />
 		</div>
 		<div transition:slide class="w-full bg-white/65 p-2 flex items-center justify-end gap-2">
-			{#if !image}
-				<button
-					type="button"
-					on:click|stopPropagation={() => {
-						align = 'left'
-						dispatchChange()
-					}}
-					class="text-center min-w-20 px-4 py-1 text-sm {align != 'left'
-						? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
-						: ''}"
-				>
-					left
-				</button>
-				<button
-					type="button"
-					on:click|stopPropagation={() => {
-						align = 'center'
-						dispatchChange()
-					}}
-					class="text-center min-w-20 px-4 py-1 text-sm {align != 'center'
-						? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
-						: ''}"
-				>
-					center
-				</button>
-				<button
-					type="button"
-					on:click|stopPropagation={() => {
-						align = 'right'
-						dispatchChange()
-					}}
-					class="text-center min-w-20 px-4 py-1 text-sm {align != 'right'
-						? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
-						: ''}"
-				>
-					right
-				</button>
-			{/if}
+			<button
+				type="button"
+				on:click|stopPropagation={() => {
+					align = 'left'
+					dispatchChange()
+				}}
+				class="text-center min-w-20 px-4 py-1 text-sm {align != 'left'
+					? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
+					: ''}"
+			>
+				left
+			</button>
+			<button
+				type="button"
+				on:click|stopPropagation={() => {
+					align = 'center'
+					dispatchChange()
+				}}
+				class="text-center min-w-20 px-4 py-1 text-sm {align != 'center'
+					? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
+					: ''}"
+			>
+				center
+			</button>
+			<button
+				type="button"
+				on:click|stopPropagation={() => {
+					align = 'right'
+					dispatchChange()
+				}}
+				class="text-center min-w-20 px-4 py-1 text-sm {align != 'right'
+					? 'bg-dark-cream/[.50] hover:bg-dark-cream/[.45]'
+					: ''}"
+			>
+				right
+			</button>
+
 			<button
 				type="button"
 				on:click|stopPropagation={deleteParagraph}
